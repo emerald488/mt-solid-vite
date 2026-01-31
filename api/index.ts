@@ -64,5 +64,5 @@ app.onError((err, c) => {
 export default handle(app);
 
 export const config = {
-  runtime: 'edge',
+  runtime: 'nodejs',
 };
