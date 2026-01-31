@@ -9,7 +9,7 @@ const app = new Hono<{ Variables: Variables }>();
 // GET /goals - список целей
 app.get('/', async (c) => {
   try {
-    const userId = c.get('userId');
+    const userId = c.get('userId') as string;
 
     const result = await db
       .select({
@@ -64,7 +64,7 @@ app.get('/', async (c) => {
 // GET /goals/:id
 app.get('/:id', async (c) => {
   try {
-    const userId = c.get('userId');
+    const userId = c.get('userId') as string;
     const id = c.req.param('id');
 
     const [goal] = await db
@@ -108,7 +108,7 @@ app.get('/:id', async (c) => {
 // POST /goals - создать цель
 app.post('/', async (c) => {
   try {
-    const userId = c.get('userId');
+    const userId = c.get('userId') as string;
     const body = await c.req.json<Partial<NewGoal>>();
 
     if (!body.accountId || !body.name || !body.targetAmount) {
@@ -146,7 +146,7 @@ app.post('/', async (c) => {
 // PUT /goals/:id - обновить цель
 app.put('/:id', async (c) => {
   try {
-    const userId = c.get('userId');
+    const userId = c.get('userId') as string;
     const id = c.req.param('id');
     const body = await c.req.json<Partial<NewGoal>>();
 
@@ -193,7 +193,7 @@ app.put('/:id', async (c) => {
 // DELETE /goals/:id - удалить цель
 app.delete('/:id', async (c) => {
   try {
-    const userId = c.get('userId');
+    const userId = c.get('userId') as string;
     const id = c.req.param('id');
 
     const [existing] = await db

@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import { eq, and, gte, lte, sql, desc } from 'drizzle-orm';
+import { eq, and, gte, lte, sql } from 'drizzle-orm';
 import {
   db,
   balanceSnapshots,
@@ -16,7 +16,7 @@ const app = new Hono<{ Variables: Variables }>();
 // GET /analytics/balance-history - история баланса
 app.get('/balance-history', async (c) => {
   try {
-    const userId = c.get('userId');
+    const userId = c.get('userId') as string;
     const { account_id, from, to } = c.req.query();
 
     // Получаем счета пользователя
@@ -67,7 +67,7 @@ app.get('/balance-history', async (c) => {
 // GET /analytics/summary - итоги по тегам за период
 app.get('/summary', async (c) => {
   try {
-    const userId = c.get('userId');
+    const userId = c.get('userId') as string;
     const { from, to, type } = c.req.query();
 
     const conditions = [eq(transactions.userId, userId)];
@@ -196,7 +196,7 @@ app.get('/summary', async (c) => {
 // GET /analytics/trends - тренды доходов/расходов по месяцам
 app.get('/trends', async (c) => {
   try {
-    const userId = c.get('userId');
+    const userId = c.get('userId') as string;
     const { months = '12' } = c.req.query();
 
     const monthsNum = parseInt(months);
@@ -255,7 +255,7 @@ app.get('/trends', async (c) => {
 // POST /analytics/snapshot - создать снапшот баланса (для cron)
 app.post('/snapshot', async (c) => {
   try {
-    const userId = c.get('userId');
+    const userId = c.get('userId') as string;
     const today = new Date().toISOString().split('T')[0];
 
     // Получаем все счета пользователя
@@ -264,7 +264,7 @@ app.post('/snapshot', async (c) => {
       .from(accounts)
       .where(eq(accounts.userId, userId));
 
-    const snapshots = [];
+    const snapshots: Array<typeof balanceSnapshots.$inferSelect> = [];
 
     for (const account of userAccounts) {
       // Upsert: обновляем или создаём снапшот на сегодня

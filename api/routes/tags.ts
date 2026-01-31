@@ -9,7 +9,7 @@ const app = new Hono<{ Variables: Variables }>();
 // GET /tags - список тегов
 app.get('/', async (c) => {
   try {
-    const userId = c.get('userId');
+    const userId = c.get('userId') as string;
 
     const result = await db
       .select()
@@ -27,7 +27,7 @@ app.get('/', async (c) => {
 // GET /tags/:id
 app.get('/:id', async (c) => {
   try {
-    const userId = c.get('userId');
+    const userId = c.get('userId') as string;
     const id = c.req.param('id');
 
     const [tag] = await db
@@ -50,7 +50,7 @@ app.get('/:id', async (c) => {
 // POST /tags - создать тег
 app.post('/', async (c) => {
   try {
-    const userId = c.get('userId');
+    const userId = c.get('userId') as string;
     const body = await c.req.json<Partial<NewTag>>();
 
     if (!body.name) {
@@ -88,7 +88,7 @@ app.post('/', async (c) => {
 // PUT /tags/:id - обновить тег
 app.put('/:id', async (c) => {
   try {
-    const userId = c.get('userId');
+    const userId = c.get('userId') as string;
     const id = c.req.param('id');
     const body = await c.req.json<Partial<NewTag>>();
 
@@ -136,7 +136,7 @@ app.put('/:id', async (c) => {
 // DELETE /tags/:id - удалить тег
 app.delete('/:id', async (c) => {
   try {
-    const userId = c.get('userId');
+    const userId = c.get('userId') as string;
     const id = c.req.param('id');
 
     // Проверка владельца

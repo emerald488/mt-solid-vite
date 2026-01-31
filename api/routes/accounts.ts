@@ -9,7 +9,7 @@ const app = new Hono<{ Variables: Variables }>();
 // GET /accounts - список счетов
 app.get('/', async (c) => {
   try {
-    const userId = c.get('userId');
+    const userId = c.get('userId') as string;
 
     const result = await db
       .select()
@@ -27,7 +27,7 @@ app.get('/', async (c) => {
 // GET /accounts/:id - один счёт
 app.get('/:id', async (c) => {
   try {
-    const userId = c.get('userId');
+    const userId = c.get('userId') as string;
     const id = c.req.param('id');
 
     const [account] = await db
@@ -50,7 +50,7 @@ app.get('/:id', async (c) => {
 // POST /accounts - создать счёт
 app.post('/', async (c) => {
   try {
-    const userId = c.get('userId');
+    const userId = c.get('userId') as string;
     const body = await c.req.json<Partial<NewAccount>>();
 
     if (!body.name) {
@@ -82,7 +82,7 @@ app.post('/', async (c) => {
 // PUT /accounts/:id - обновить счёт
 app.put('/:id', async (c) => {
   try {
-    const userId = c.get('userId');
+    const userId = c.get('userId') as string;
     const id = c.req.param('id');
     const body = await c.req.json<Partial<NewAccount>>();
 
@@ -123,7 +123,7 @@ app.put('/:id', async (c) => {
 // DELETE /accounts/:id - удалить счёт
 app.delete('/:id', async (c) => {
   try {
-    const userId = c.get('userId');
+    const userId = c.get('userId') as string;
     const id = c.req.param('id');
 
     // Проверка владельца

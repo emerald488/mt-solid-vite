@@ -17,7 +17,7 @@ const app = new Hono<{ Variables: Variables }>();
 // GET /recurring-payments - список
 app.get('/', async (c) => {
   try {
-    const userId = c.get('userId');
+    const userId = c.get('userId') as string;
     const { active } = c.req.query();
 
     const conditions = [eq(recurringPayments.userId, userId)];
@@ -98,7 +98,7 @@ app.get('/', async (c) => {
 // POST /recurring-payments - создать
 app.post('/', async (c) => {
   try {
-    const userId = c.get('userId');
+    const userId = c.get('userId') as string;
     const body = await c.req.json<
       Partial<NewRecurringPayment> & { tagIds?: string[] }
     >();
@@ -155,7 +155,7 @@ app.post('/', async (c) => {
 // PUT /recurring-payments/:id - обновить
 app.put('/:id', async (c) => {
   try {
-    const userId = c.get('userId');
+    const userId = c.get('userId') as string;
     const id = c.req.param('id');
     const body = await c.req.json<
       Partial<NewRecurringPayment> & { tagIds?: string[] }
@@ -211,7 +211,7 @@ app.put('/:id', async (c) => {
 // DELETE /recurring-payments/:id
 app.delete('/:id', async (c) => {
   try {
-    const userId = c.get('userId');
+    const userId = c.get('userId') as string;
     const id = c.req.param('id');
 
     const [existing] = await db
@@ -236,7 +236,7 @@ app.delete('/:id', async (c) => {
 // POST /recurring-payments/:id/execute - выполнить платёж
 app.post('/:id/execute', async (c) => {
   try {
-    const userId = c.get('userId');
+    const userId = c.get('userId') as string;
     const id = c.req.param('id');
 
     const [payment] = await db

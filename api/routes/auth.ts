@@ -111,10 +111,10 @@ app.post('/login', async (c) => {
   }
 });
 
-// GET /auth/me (protected - добавить middleware в index.ts)
+// GET /auth/me (protected - вызывается с authMiddleware)
 app.get('/me', async (c) => {
   try {
-    const userId = c.get('userId');
+    const userId = c.req.header('X-User-Id');
 
     if (!userId) {
       return c.json({ error: 'Unauthorized' }, 401);
@@ -128,7 +128,7 @@ app.get('/me', async (c) => {
         createdAt: users.createdAt,
       })
       .from(users)
-      .where(eq(users.id, userId))
+      .where(eq(users.id, userId as string))
       .limit(1);
 
     if (!user) {

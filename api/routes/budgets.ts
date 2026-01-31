@@ -9,7 +9,7 @@ const app = new Hono<{ Variables: Variables }>();
 // GET /budgets - список бюджетов
 app.get('/', async (c) => {
   try {
-    const userId = c.get('userId');
+    const userId = c.get('userId') as string;
     const { month } = c.req.query();
 
     const conditions = [eq(budgets.userId, userId)];
@@ -44,7 +44,7 @@ app.get('/', async (c) => {
 // POST /budgets - создать/обновить бюджет
 app.post('/', async (c) => {
   try {
-    const userId = c.get('userId');
+    const userId = c.get('userId') as string;
     const body = await c.req.json<Partial<NewBudget>>();
 
     if (!body.tagId || !body.amount || !body.month) {
@@ -107,7 +107,7 @@ app.post('/', async (c) => {
 // DELETE /budgets/:id - удалить бюджет
 app.delete('/:id', async (c) => {
   try {
-    const userId = c.get('userId');
+    const userId = c.get('userId') as string;
     const id = c.req.param('id');
 
     const [existing] = await db

@@ -9,7 +9,7 @@ const app = new Hono<{ Variables: Variables }>();
 // GET /transactions - список с фильтрами
 app.get('/', async (c) => {
   try {
-    const userId = c.get('userId');
+    const userId = c.get('userId') as string;
     const { from, to, account_id, tag_id, type, limit = '50', offset = '0' } = c.req.query();
 
     const conditions = [eq(transactions.userId, userId)];
@@ -100,7 +100,7 @@ app.get('/', async (c) => {
 // GET /transactions/:id
 app.get('/:id', async (c) => {
   try {
-    const userId = c.get('userId');
+    const userId = c.get('userId') as string;
     const id = c.req.param('id');
 
     const [transaction] = await db
@@ -145,7 +145,7 @@ app.get('/:id', async (c) => {
 // POST /transactions - создать транзакцию
 app.post('/', async (c) => {
   try {
-    const userId = c.get('userId');
+    const userId = c.get('userId') as string;
     const body = await c.req.json<
       Partial<NewTransaction> & { tagIds?: string[] }
     >();
@@ -226,7 +226,7 @@ app.post('/', async (c) => {
 // PUT /transactions/:id
 app.put('/:id', async (c) => {
   try {
-    const userId = c.get('userId');
+    const userId = c.get('userId') as string;
     const id = c.req.param('id');
     const body = await c.req.json<
       Partial<NewTransaction> & { tagIds?: string[] }
@@ -283,7 +283,7 @@ app.put('/:id', async (c) => {
 // DELETE /transactions/:id
 app.delete('/:id', async (c) => {
   try {
-    const userId = c.get('userId');
+    const userId = c.get('userId') as string;
     const id = c.req.param('id');
 
     // Получаем транзакцию для отката баланса

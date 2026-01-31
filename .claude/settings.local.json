@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm create:*)",
+      "mcp__neon__describe_table_schema",
+      "Bash(npm install:*)",
+      "Bash(npx tsc:*)",
+      "mcp__neon__get_connection_string",
+      "Bash(gh auth:*)",
+      "Bash(\"/c/Program Files/GitHub CLI/gh.exe\" repo create mt-solid-vite --public --source=. --remote=origin --push --description \"Money Tracker - Personal Finance App with Crypto Integration\")",
+      "Bash(powershell.exe -Command \"gh auth status\")",
+      "Bash(powershell.exe -Command \"cd D:\\\\mt-solid-vite; gh repo create mt-solid-vite --public --source=. --remote=origin --push --description ''Money Tracker - Personal Finance App''\")"
+    ]
+  }
+}
