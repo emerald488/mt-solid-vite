@@ -19,7 +19,11 @@
       "Bash(del nul)",
       "Bash(git commit -m \"$\\(cat <<''EOF''\nfeat: Фаза 3 — Frontend Core\n\n- API client с JWT interceptor\n- Auth store \\(token, user в localStorage\\)\n- Auth queries \\(login, register\\)\n- Protected routes guard\n- UI компоненты \\(Button, Input, Card, Modal, Select\\)\n- AccountForm, TransactionForm\n- Обновлены страницы Accounts, Transactions, Dashboard\n- bcryptjs для совместимости с прошлым проектом\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
       "Bash(git push)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "mcp__neon__run_sql",
+      "Bash(npm run db:push:*)",
+      "Bash(npx drizzle-kit push:*)",
+      "Bash(npx psql \"postgresql://neondb_owner:npg_IhWmik1rc2tj@ep-small-shadow-ahalgf1y-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require\" -c \"ALTER TABLE users ADD COLUMN IF NOT EXISTS password_sha256 VARCHAR\\(255\\);\")"
     ]
   }
 }

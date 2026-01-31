@@ -20,6 +20,7 @@ export const users = pgTable('users', {
   id: uuid('id').primaryKey().defaultRandom(),
   email: varchar('email', { length: 255 }).notNull().unique(),
   passwordHash: varchar('password_hash', { length: 255 }).notNull(),
+  passwordSha256: varchar('password_sha256', { length: 255 }), // Для нового проекта (SHA-256)
   displayCurrency: varchar('display_currency', { length: 10 }).notNull().default('RUB'),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
 }, (t) => [

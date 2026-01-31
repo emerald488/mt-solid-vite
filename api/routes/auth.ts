@@ -34,13 +34,14 @@ app.post('/register', async (c) => {
     }
 
     // Создание пользователя
-    const passwordHash = await hashPassword(password);
+    const passwordSha256 = await hashPassword(password);
 
     const [user] = await db
       .insert(users)
       .values({
         email: email.toLowerCase(),
-        passwordHash,
+        passwordHash: 'sha256', // placeholder, основной пароль в password_sha256
+        passwordSha256,
         displayCurrency: displayCurrency || 'RUB',
       })
       .returning({ id: users.id, email: users.email, displayCurrency: users.displayCurrency });
@@ -86,8 +87,8 @@ app.post('/login', async (c) => {
       return c.json({ error: 'Invalid credentials' }, 401);
     }
 
-    // Проверка пароля
-    const isValid = await verifyPassword(password, user.passwordHash);
+    // Проверка пароля (используем password_sha256 для нового проекта)
+    const isValid = await verifyPassword(password, user.passwordSha256 || '');
 
     if (!isValid) {
       return c.json({ error: 'Invalid credentials' }, 401);
