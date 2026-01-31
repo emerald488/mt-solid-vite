@@ -1,6 +1,5 @@
 import { createMiddleware } from 'hono/factory';
 import * as jose from 'jose';
-import { compare, hash } from 'bcrypt-ts';
 
 type Variables = {
   userId: string;
@@ -41,22 +40,16 @@ export async function createToken(userId: string): Promise<string> {
     .sign(secret);
 }
 
-// Хэширование пароля с bcrypt (совместимость с прошлым проектом)
+// Хэширование пароля (SHA-256 + JWT_SECRET)
 export async function hashPassword(password: string): Promise<string> {
-  return hash(password, 12);
-}
-
-// Проверка пароля - поддержка bcrypt и legacy SHA-256
-export async function verifyPassword(password: string, storedHash: string): Promise<boolean> {
-  // bcrypt хеши начинаются с $2a$, $2b$ или $2y$
-  if (storedHash.startsWith('$2')) {
-    return compare(password, storedHash);
-  }
-
-  // Legacy SHA-256 хеши (для обратной совместимости)
   const encoder = new TextEncoder();
   const data = encoder.encode(password + process.env.JWT_SECRET);
-  const sha256Hash = await crypto.subtle.digest('SHA-256', data);
-  const legacyHash = btoa(String.fromCharCode(...new Uint8Array(sha256Hash)));
-  return legacyHash === storedHash;
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  return btoa(String.fromCharCode(...new Uint8Array(hashBuffer)));
+}
+
+// Проверка пароля
+export async function verifyPassword(password: string, storedHash: string): Promise<boolean> {
+  const computedHash = await hashPassword(password);
+  return computedHash === storedHash;
 }
